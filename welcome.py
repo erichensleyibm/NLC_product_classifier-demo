@@ -15,7 +15,7 @@ import os
 import requests
 
 import _config
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 from watson_developer_cloud import NaturalLanguageClassifierV1
 from flask_table import Table, Col
 
@@ -48,11 +48,11 @@ def Welcome():
     global CLASSIFIER
     
     try:
+        global NLC_SERVICE
         NLC_SERVICE = NaturalLanguageClassifierV1(
         username=NLC_USERNAME,
         password=NLC_PASSWORD      
         )
-        global NLC_SERVICE
     except:
         NLC_SERVICE = False
     
@@ -86,7 +86,7 @@ def classify_text():
         # fill in the text boxes
         return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results)
     else:
-        return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = 'No description provided.')
+        return render_template('index.html', classifier_info=classifier_info, classifier_input = 'No description provided.', all_results = '')
         
 @app.route('/classify_url', methods=['GET', 'POST'])
 def classify_url():
@@ -111,7 +111,7 @@ def classify_url():
         # fill in the text boxes
         return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results)
     else:
-        return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = 'Invalid Url')
+        return render_template('index.html', classifier_info=classifier_info, classifier_input =  'Invalid Url.  Please provide a product page from Kohls.com, or manually add the product description above.', all_results = '')
   
 class ResultsTable(Table):
     table_id = 'classes'
@@ -128,7 +128,7 @@ def _create_classifier():
     else:
         # if none found, create a new classifier, change this value
         with open(DATA_SET, 'rb') as training_data:
-            metadata = '{"name": "ICD_classifier", "language": "en"}'
+            metadata = '{"name": "Product_description_classifier", "language": "en"}'
             classifier = NLC_SERVICE.create_classifier(
                 metadata=metadata,
                 training_data=training_data
