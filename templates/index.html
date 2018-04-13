@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Python Flask Starter Application</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="static/stylesheets/style.css">
+  </head>
+
+  <body>
+    <table>
+      <tr>
+        <td>
+          <h1>NLC Demo</h1>
+        </td>
+      </tr>
+      <tr>
+          <td>
+            <p>NLC Configuration: </p>
+            <textarea rows="8" cols="110"> {{ classifier_info }} </textarea>
+            <br>
+          </td>
+        </tr>  
+      <tr>
+        <td>
+          <form action="/classify_text" method="post"> Text to classify: <input type="text" name="classifierinput_text"> <input type="submit" value="Submit"> </form>
+          <form action="/classify_url" method="post"> URL to Kohls.com Product: <input type="text" name="classifierinput_url"> <input type="submit" value="Submit"> </form>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p> Input for Watson NLC classifier: </p>
+          <textarea rows="5" cols="110"> {{ classifier_input }} </textarea>
+            
+            <p> </p>
+            {{ all_results }}
+
+          <br>
+        </td>
+      </tr>
+    </table>   
+  </body>
+
+</html>
