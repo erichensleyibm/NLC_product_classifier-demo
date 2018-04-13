@@ -38,6 +38,7 @@ else:
         NLC_USERNAME = _config.NLC_USERNAME
         NLC_PASSWORD = _config.NLC_PASSWORD
     except:
+    # handling for hardcoding credentials
         NLC_USERNAME = ""
         NLC_PASSWORD = ""        
     
@@ -73,17 +74,13 @@ def classify_text():
     # get info about the classifier
     classifier_info = json.dumps(CLASSIFIER, indent=4)
 
+    #check if text is valid
     if input_text != '':
-        #send the text to the classifier, get back an ICD code
+        #send the text to the classifier, get back a product classification
         classifier_output = NLC_SERVICE.classify(CLASSIFIER['classifier_id'], input_text)
-        #format results
+        #send results to table formatter
         all_results = ResultsTable(classifier_output['classes'])
-#        classifier_output = json.dumps(classifier_output['top_class'], indent=4)
         
-        #classifier_output = input_text
-        #classifier_output = json.dumps(classifier_output, indent=4)
-    
-        # fill in the text boxes
         return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results)
     else:
         return render_template('index.html', classifier_info=classifier_info, classifier_input = 'No description provided.', all_results = '')
@@ -96,24 +93,24 @@ def classify_url():
 
     # get the text from the UI    
     input_url = request.form['classifierinput_url']
+    
+    # send url to parser
     input_text = _get_Kohls_url_info(input_url)
     
+    # check for valid product description
     if input_text:
         # send the text to the classifier, get back an ICD code
         classifier_output = NLC_SERVICE.classify(CLASSIFIER['classifier_id'], input_text)
-        # format results
+        # send results to table formatter
         all_results = ResultsTable(classifier_output['classes'])
-#        classifier_output = json.dumps(classifier_output['top_class'], indent=4)
         
-#        classifier_output = input_text
-    #    classifier_output = json.dumps(classifier_output, indent=4)
-    
         # fill in the text boxes
         return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results)
     else:
         return render_template('index.html', classifier_info=classifier_info, classifier_input =  'Invalid Url.  Please provide a product page from Kohls.com, or manually add the product description above.', all_results = '')
   
 class ResultsTable(Table):
+    # set class id and table values
     table_id = 'classes'
     class_name = Col('Class')
     confidence = Col('Confidence')      
@@ -136,13 +133,23 @@ def _create_classifier():
         return classifier
 
 def _get_Kohls_url_info(url):
+    # parse passed url
+    
+    # check if valid product description
     if url[8:34] == 'www.kohls.com/product/prd-':
+        # extract product_id
         prd_id = url.split('/prd-')[1].split('/')[0]
         raw_desc = []
+    
+        # loop to handle missed connections
         while raw_desc == []:
+            # retrieve page info
             pageContent=requests.get(url)
+            # convert to html
             tree = html.fromstring(pageContent.content)
+            # parse html using xpath
             raw_desc = tree.xpath('//*[@id="%s_productDetails"]/div/descendant::*/text()' % (prd_id))
+            # extract product description
             desc = ' '.join([i for i in raw_desc if i not in ['PRODUCT FEATURES', '\r']])
         return desc
     else:
