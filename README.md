@@ -1,10 +1,14 @@
 > **DISCLAIMER**: This application is used for demonstrative and illustrative purposes only and does not constitute an offering that has gone through regulatory review. It is not intended to serve as a medical application. There is no representation as to the accuracy of the output of this application and it is presented without warranty.
 
-# Classify medical diagnosis with ICD-10 code
+# Classify E-Commerce product descriptions
 
-This application was built to demonstrate IBM's Watson Natural Language Classifier (NLC). The data set we will be using, [ICD-10-GT-AA.csv](data/ICD-10-GT-AA.csv), contains a subset of [ICD-10](https://en.wikipedia.org/wiki/ICD-10) entries. ICD-10 is the 10th revision of the International Statistical Classification of Diseases and Related Health Problems. In short, it is a medical classification list by the World Health Organization (WHO) that contains codes for: diseases, signs and symptoms, abnormal findings, complaints, social circumstances, and external causes of injury or diseases. Hospitals and insurance companies alike could save time and money by levearging Watson to properly tag the most accurate ICD-10 codes.
+This application was built to demonstrate IBM's Watson Natural Language Classifier (NLC). The data set we will be using, made by cleaning and combining the [flipkart](https://www.kaggle.com/PromptCloudHQ/flipkart-products) and [JCPenny](https://www.kaggle.com/PromptCloudHQ/all-jc-penny-products/data) datasets made available through [Kaggle](https://www.kaggle.com), contains product descriptions and category labels.  One of the biggest advantages of stores operating online rather than as a brick-and-mortar has been the efficiency of removing physical inventory and labor.  Utilizing Watson NLC allows an online marketplace to further automate their inventory management and cataloging system by classifying products based on their description.  Just like with brick-and-mortar stores, online stores need to display their products in the correct section of their stores to ensure ease of use by consumers.  Watson Natural Language Classification allows this to be done both at high levels of confidence and on a continual basis.
 
-This application is a Python web application based on the [Flask microframework](http://flask.pocoo.org/), and based on earlier work done by [Ryan Anderson](https://github.com/rustyoldrake/IBM_Watson_NLC_ICD10_Health_Codes). It uses the [Watson Python SDK](https://github.com/watson-developer-cloud/python-sdk) to create the classifier, list classifiers, and classify the input text. We also make use of the freely available [ICD-10 API](http://icd10api.com/) which, given an ICD-10 code, returns a name and description.
+For demonstration, the app accepts both raw text descriptions as well as urls from product offered by [Kohl's](https://www.kohls.com/) where it extracts the product descrption. [Kohl's](https://www.kohls.com/) was chosen because the nature of products are similar to products on [Flipkart](https://www.flipkart.com/) and [JCPenny](https://www.jcpenney.com/), which were used in training.  Although the products themselves are similar, there are many nuanced differences in word choice and usage.  These differences in natural language, while not noticed by human interpreters, has in the past been a huge issue in automated approached to analysis.  Watson's ability to understand and analyze the meanings of words, as opposed to simply memorizing them, is what sets its capabilities apart from other machine learning tools.
+
+This application is a Python web application based on the [Flask microframework](http://flask.pocoo.org/), and based on earlier work done by [Ryan Anderson](https://github.com/rustyoldrake/IBM_Watson_NLC_ICD10_Health_Codes). It uses the [Watson Python SDK](https://github.com/watson-developer-cloud/python-sdk) to create the classifier, list classifiers, and classify the input text. 
+
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://github.com/erichensleyibm/NLC_product_classifier-demo)
 
 ## Architecture
 
@@ -12,15 +16,15 @@ This application is a Python web application based on the [Flask microframework]
 
 ## Setup the classifier
 
-Here we create the classifier with our ICD-10 dataset.
+Here we create the classifier with our product description dataset.
 
-1. Download the [ICD-10 dataset](https://raw.githubusercontent.com/stevemart/nlc-icd10-demo/master/data/ICD-10-GT-AA.csv) by right clicking the link and seletcting _Save As_.
+1. Download the [product description training dataset](https://github.com/erichensleyibm/NLC_product_classifier-demo/tree/master/data) by right clicking the link and selecting _Save As_.
 1. Create an [NLC service in IBM Cloud](https://console.bluemix.net/catalog/services/natural-language-classifier), make a note of the service name used in the catalog, we'll need this later.
 1. Create service credentials by using the menu on the left and selecting the default options.
 1. Upload the data using the command below. Be sure to substitute the username and password. This will take around 3 hours.
 
 ```bash
-curl -i --user "$username":"$password" -F training_data=@ICD-10-GT-AA.csv -F training_metadata="{\"language\":\"en\",\"name\":\"ICD-10Classifier\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
+curl -i --user "$username":"$password" -F training_data=@ICD-10-GT-AA.csv -F training_metadata="{\"language\":\"en\",\"name\":\"product_description_classifier\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
 ````
 
 ## Running the application
@@ -29,7 +33,7 @@ This application can be run locally or hosted on IBM Cloud, follow the steps bel
 
 ### Run locally
 
-1. Clone this project: `git clone git@github.com:IBM/nlc-icd10-demo.git`
+1. Clone this project: `git clone git@github.com:erichensleyibm/NLC_product_classifier-demo.git`
 1. `cd` into this project's root directory
 1. (Optionally) create a virtual environment: `virtualenv my-nlc-demo`
     1. Activate the virtual environment: `./my-nlc-demo/bin/activate`
@@ -40,7 +44,7 @@ This application can be run locally or hosted on IBM Cloud, follow the steps bel
 
 ### Run on IBM Cloud
 
-1. Clone this project: `git clone git@github.com:IBM/nlc-icd10-demo.git`
+1. Clone this project: `git clone git@github.com:erichensleyibm/NLC_product_classifier-demo.git`
 1. `cd` into this project's root directory
 1. Update [`manifest.yml`](manifest.yml) with the NLC service name (`your_nlc_service_name`), a unique application name (`your_app_name`) and unique host value (`your_app_host`)
 
@@ -69,9 +73,6 @@ This application can be run locally or hosted on IBM Cloud, follow the steps bel
 * [IBM Cloud CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html)
 * [Watson Natural Language Classifier](https://www.ibm.com/watson/services/natural-language-classifier/)
 * [Ryan Anderson's Original Work](https://github.com/rustyoldrake/IBM_Watson_NLC_ICD10_Health_Codes)
-* [ICD-10 API](http://icd10api.com)
-* [ICD-10 on Wikipedia](https://en.wikipedia.org/wiki/ICD-10)
-* [Intro to NLC Tutorial](https://www.youtube.com/watch?v=SUj826ybCdU)
 
 # License
 

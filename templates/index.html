@@ -10,14 +10,79 @@
   </head>
 
   <body>
-    <table>
+  <!-- top level heading -->
+  <header class="_demo--heading">
+    <div class="_demo--container">
+      <a class="wordmark" href="http://www.ibm.com/watson/developer/">
+        <span class="wordmark--left">IBM</span>
+        <span class="wordmark--right">Watson Developer Cloud</span>
+      </a>
+      <nav class="heading-nav" role="menubar">
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="https://www.ibm.com/watson/products-services/" role="menuitem">
+          Services
+        </a>
+        </li>
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="https://www.ibm.com/watson/developercloud/doc/index.html" role="menuitem">
+          Docs
+        </a>
+        </li>
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="http://www.ibm.com/watson/developercloud/starter-kits.html" role="menuitem">
+          Starter Kits
+        </a>
+        </li>
+        <li class="base--li heading-nav--li" role="presentation">
+          <a class="heading-nav--item" href="https://developer.ibm.com/watson/" role="menuitem">
+          Community
+        </a>
+        </li>
+      </nav>
+    </div>
+  </header>
+  <div class="_demo--banner">
+    <div class="_demo--container">
+      <div class="banner--service-icon-container">
+        <img class="banner--service-icon" src="static/images/service-icon.png" alt="Natural Language Classifier API Icon">
+      </div>
+      <div class="banner--service-info">
+        <h1 class="banner--service-title base--h1">
+          <img class="banner--service-icon_INLINE" src="static/images/service-icon.png" alt="Natural Language Classifier API Icon"> Natural Language Classifier
+        </h1>
+        <div class="banner--service-description">
+          Interpret unstructured natural language and classify it with confidence.
+        </div>
+        <div class="banner--service-resource">
+          <strong>Resources:</strong>
+        </div>
+        <div class="banner--service-links">
+          <li class="base--li banner--service-link-item">
+            <a href="https://www.ibm.com/watson/developercloud/natural-language-classifier/api/v1/curl.html" class="base--a">API Reference</a>
+          </li>
+          <li class="base--li banner--service-link-item">
+            <a href="https://console.bluemix.net/docs/services/natural-language-classifier/best-practices.html" class="base--a">Documentation</a>
+          </li>
+          <li class="base--li banner--service-link-item">
+            <a href="https://github.com/erichensleyibm/NLC_product_classifier-demo" class="base--a">Fork on Github</a>
+          </li>
+          <li class="base--li banner--service-link-item">
+            <a href="https://console.bluemix.net/registration?target=%2Fdeveloper%2Fwatson%2Fcreate-project%3Fservices%3Dpersonality_insights%26hideTours%3Dtrue&cm_mmc%3DOSocial_Tumblr-_-Watson%2BCore_Watson%2BCore%2B-%2BPlatform-_-WW_WW-_-wdc-ref%26cm_mmc%3DOSocial_Tumblr-_-Watson%2BCore_Watson%2BCore%2B-%2BPlatform-_-WW_WW-_-wdc-ref%26cm_mmca1%3D000000OF%26cm_mmca2%3D10000409" class="base--button base--button_fill">Start for free in IBM Cloud</a>
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <table class="center">
       <tr>
         <td>
-          <h1>Product Classification NLC Demo</h1>
+          <h2 id="demo-header">Product Classification NLC Demo</h2>
         </td>
       </tr>
       <tr>
           <td>
+            <p> </p>              
             <p>NLC Configuration: </p>
             <textarea rows="8" cols="96"> {{ classifier_info }} </textarea>
             <br>
@@ -27,6 +92,7 @@
         <td>
           <form action="/classify_text" method="post"> Text to classify: <input type="text" name="classifierinput_text"> <input type="submit" value="Submit"> </form>
           <form action="/classify_url" method="post"> URL to Kohls.com Product: <input type="text" name="classifierinput_url"> <input type="submit" value="Submit"> </form>
+        <p> </p>
         </td>
       </tr>
       <tr>
