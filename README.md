@@ -8,11 +8,7 @@ For demonstration, the app accepts both raw text descriptions as well as urls fr
 
 This application is a Python web application based on the [Flask microframework](http://flask.pocoo.org/), and based on earlier work done by [Ryan Anderson](https://github.com/rustyoldrake/IBM_Watson_NLC_ICD10_Health_Codes). It uses the [Watson Python SDK](https://github.com/watson-developer-cloud/python-sdk) to create the classifier, list classifiers, and classify the input text. 
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://github.com/erichensleyibm/NLC_product_classifier-demo)
-
-## Architecture
-
-![](images/architecture.png)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/devops/setup/deploy?repository=https://github.com/erichensleyibm/NLC_product_classifier-demo)
 
 ## Setup the classifier
 
@@ -24,7 +20,7 @@ Here we create the classifier with our product description dataset.
 1. Upload the data using the command below. Be sure to substitute the username and password. This will take around 3 hours.
 
 ```bash
-curl -i --user "$username":"$password" -F training_data=@ICD-10-GT-AA.csv -F training_metadata="{\"language\":\"en\",\"name\":\"product_description_classifier\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
+curl -i --user "$username":"$password" -F training_data=@product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"product_description_classifier\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
 ````
 
 ## Running the application
