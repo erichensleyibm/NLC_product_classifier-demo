@@ -1,5 +1,7 @@
 > **DISCLAIMER**: This application is used for demonstrative and illustrative purposes only and does not constitute an offering that has gone through regulatory review. It is not intended to serve as a medical application. There is no representation as to the accuracy of the output of this application and it is presented without warranty.
 
+# [Web-App](https://erichensley-nlc-demo.mybluemix.net/)
+
 # Classify E-Commerce product descriptions
 
 This application was built to demonstrate IBM's Watson Natural Language Classifier (NLC). The data set we will be using, made by cleaning and combining the [flipkart](https://www.kaggle.com/PromptCloudHQ/flipkart-products) and [JCPenny](https://www.kaggle.com/PromptCloudHQ/all-jc-penny-products/data) datasets made available through [Kaggle](https://www.kaggle.com), contains product descriptions and category labels.  One of the biggest advantages of stores operating online rather than as a brick-and-mortar has been the efficiency of removing physical inventory and labor.  Utilizing Watson NLC allows an online marketplace to further automate their inventory management and cataloging system by classifying products based on their description.  Just like with brick-and-mortar stores, online stores need to display their products in the correct section of their stores to ensure ease of use by consumers.  Watson Natural Language Classification allows this to be done both at high levels of confidence and on a continual basis.
