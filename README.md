@@ -1,6 +1,8 @@
 > **DISCLAIMER**: This application is used for demonstrative and illustrative purposes only. There is no representation as to the accuracy of the output of this application and it is presented without warranty.
 
-# [Web-App](https://erichensley-nlc-demo.mybluemix.net/)
+# [Demo Web Application](https://erichensley-nlc-demo.mybluemix.net/)
+
+Click on the link above to try out the sample app for yourself! Note, the application is made to classify product descriptions based on the input data.
 
 # Classify E-Commerce product descriptions
 
