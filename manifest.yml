@@ -7,5 +7,5 @@ applications:
   host: erichensley-nlc-demo
   disk_quota: 1024M
   services:
-  - Natural Language Classifier-6y
+  - Natural Language Classifier-mu
   buildpack: python_buildpack

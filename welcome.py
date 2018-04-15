@@ -24,7 +24,7 @@ from lxml import html
 app = Flask(__name__)
 
 # The data set we want to use
-DATA_SET = 'data/product_description_training.csv'
+DATA_SET = 'data/hierarchy_product_description_training.csv'
 
 VCAP_SERVICES = os.getenv("VCAP_SERVICES")
 if VCAP_SERVICES is not None:

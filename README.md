@@ -22,8 +22,7 @@ Here we create the classifier with our product description dataset.
 1. Upload the data using the command below. Be sure to substitute the username and password. This will take around 3 hours.
 
 ```bash
-curl -i --user "$username":"$password" -F training_data=@product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"product_description_classifier\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
-````
+curl -i -u {username}:{password} -F training_data=@data/hierarchy_product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"hierarchy_product_description_training\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"````
 
 ## Running the application
 
@@ -36,7 +35,9 @@ This application can be run locally or hosted on IBM Cloud, follow the steps bel
 1. (Optionally) create a virtual environment: `virtualenv my-nlc-demo`
     1. Activate the virtual environment: `./my-nlc-demo/bin/activate`
 1. Run `pip install -r requirements.txt` to install the app's dependencies
-1. Update the [welcome.py](welcome.py) with your NLC credentials
+1. Add your NLC credentials
+    1. Update the [welcome.py](welcome.py) with your NLC credentials hardcoded
+    1. OR add a file named _config.py with your credentials within the same folder as [welcome.py](welcome.py) 
 1. Run `python welcome.py`
 1. Access the running app in a browser at `http://localhost:5000`
 
