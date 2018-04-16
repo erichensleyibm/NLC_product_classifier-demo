@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="static/stylesheets/style.css">
+    <link rel="shortcut icon" href="static/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
   </head>
 
   <body>
@@ -84,7 +86,7 @@
           <td>
             <p> </p>              
             <p>NLC Configuration: </p>
-            <textarea rows="8" cols="96"> {{ classifier_info }} </textarea>
+            {{ classifier_info }} 
             <br>
           </td>
         </tr>  
@@ -98,8 +100,9 @@
       <tr>
         <td>
           <p> Input for Watson Natural Language Classifier: </p>
-          <textarea rows="5" cols="96"> {{ classifier_input }} </textarea>
-            
+          <textarea rows="5" cols="126"> {{ classifier_input }} </textarea>
+          
+          <p id=error_line> {{ error_line }} </p>
             <p> </p>
             {{ all_results }}
 

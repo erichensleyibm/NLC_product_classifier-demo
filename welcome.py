@@ -20,11 +20,16 @@ from watson_developer_cloud import NaturalLanguageClassifierV1
 from flask_table import Table, Col
 
 from lxml import html
+cur_path = os.path.abspath(__file__)
+while cur_path.split('/')[-1] != 'NLC_product_classifier-demo':
+    cur_path = os.path.abspath(os.path.join(cur_path, os.pardir))
 
+data_folder = os.path.join(cur_path, 'data')
 app = Flask(__name__)
 
 # The data set we want to use
-DATA_SET = 'data/hierarchy_product_description_training.csv'
+#DATA_SET = 'hierarchy_product_description_training_small.csv'
+DATA_SET = 'hierarchy_product_description_training.csv'
 
 VCAP_SERVICES = os.getenv("VCAP_SERVICES")
 if VCAP_SERVICES is not None:
@@ -41,13 +46,15 @@ else:
     # handling for hardcoding credentials
         NLC_USERNAME = ""
         NLC_PASSWORD = ""        
-    
+
 CLASSIFIER = None
 
 @app.route('/')
 def Welcome():
     global CLASSIFIER
-    
+    global CLASSIFIER_READY
+    global CLASSIFIER_STATUS
+   
     try:
         global NLC_SERVICE
         NLC_SERVICE = NaturalLanguageClassifierV1(
@@ -60,11 +67,23 @@ def Welcome():
     if NLC_SERVICE:
         # create classifier if it doesn't exist, format the json
         CLASSIFIER = _create_classifier()
-        classifier_info = json.dumps(CLASSIFIER, indent=4)
+        if CLASSIFIER['status'] == 'Available':
+            CLASSIFIER_STATUS = 'config'
+            CLASSIFIER_READY = True
+        elif CLASSIFIER['status'] == 'Training':
+            CLASSIFIER_STATUS = 'config_training'
+            CLASSIFIER_READY = False
+        else:
+            CLASSIFIER_STATUS = 'config_error'
+            CLASSIFIER_READY = False
+            
+#        classifier_info = json.dumps(CLASSIFIER, indent=4)
+        _CLASSIFIER = [{'key':key,'value':value} for (key,value) in CLASSIFIER.items()]
+        classifier_info = ConfigTable(_CLASSIFIER, table_id=CLASSIFIER_STATUS)
         # update the UI, but only the classifier info box
-        return render_template('index.html', classifier_info=classifier_info, icd_code="", icd_output="", classifier_output="")
+        return render_template('index.html', classifier_info=classifier_info, classifier_output="", error_line = '')
     else:
-        return render_template('index.html', classifier_info="Please add a _config.py file with your NLC credentials if running locally. "  , icd_code="", icd_output="", classifier_output="")
+        return render_template('index.html', classifier_info='', error_line="Please add a _config.py file with your NLC credentials if running locally. "  , classifier_output="")
         
 
 @app.route('/classify_text', methods=['GET', 'POST'])
@@ -72,42 +91,50 @@ def classify_text():
     # get the text from the UI
     input_text = request.form['classifierinput_text']
     # get info about the classifier
-    classifier_info = json.dumps(CLASSIFIER, indent=4)
-
-    #check if text is valid
-    if input_text != '':
-        #send the text to the classifier, get back a product classification
-        classifier_output = NLC_SERVICE.classify(CLASSIFIER['classifier_id'], input_text)
-        #send results to table formatter
-        all_results = ResultsTable(classifier_output['classes'])
-        
-        return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results)
+    _CLASSIFIER = [{'key':key,'value':value} for (key,value) in CLASSIFIER.items()]
+    classifier_info = ConfigTable(_CLASSIFIER, table_id=CLASSIFIER_STATUS)
+    
+    if CLASSIFIER_READY:
+        #check if text is valid
+        if input_text != '':
+            #send the text to the classifier, get back a product classification
+            classifier_output = NLC_SERVICE.classify(CLASSIFIER['classifier_id'], input_text)
+            #send results to table formatter
+            all_results = ResultsTable(classifier_output['classes'])
+            
+            return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results, error_line = '')
+        else:
+            return render_template('index.html', classifier_info=classifier_info, classifier_input = '', all_results = '', error_line = 'No description provided.')
     else:
-        return render_template('index.html', classifier_info=classifier_info, classifier_input = 'No description provided.', all_results = '')
+        return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = '', error_line = 'Classifier is currently %s.' % (CLASSIFIER['status'].lower()))
         
 @app.route('/classify_url', methods=['GET', 'POST'])
 def classify_url():
     
     # get info about the classifier
-    classifier_info = json.dumps(CLASSIFIER, indent=4)
+    _CLASSIFIER = [{'key':key,'value':value} for (key,value) in CLASSIFIER.items()]
+    classifier_info = ConfigTable(_CLASSIFIER, table_id=CLASSIFIER_STATUS)
 
     # get the text from the UI    
     input_url = request.form['classifierinput_url']
     
     # send url to parser
     input_text = _get_Kohls_url_info(input_url)
-    
-    # check for valid product description
-    if input_text:
-        # send the text to the classifier, get back an ICD code
-        classifier_output = NLC_SERVICE.classify(CLASSIFIER['classifier_id'], input_text)
-        # send results to table formatter
-        all_results = ResultsTable(classifier_output['classes'])
-        
-        # fill in the text boxes
-        return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results)
+
+    if CLASSIFIER_READY:
+        # check for valid product description
+        if input_text:
+            # send the text to the classifier, get back an ICD code
+            classifier_output = NLC_SERVICE.classify(CLASSIFIER['classifier_id'], input_text)
+            # send results to table formatter
+            all_results = ResultsTable(classifier_output['classes'])
+            
+            # fill in the text boxes
+            return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = all_results, error_line = '')
+        else:
+            return render_template('index.html', classifier_info=classifier_info, classifier_input =  '', error_line = 'Invalid Url.  Please provide a product page from Kohls.com, or manually add the product description above.', all_results = '')
     else:
-        return render_template('index.html', classifier_info=classifier_info, classifier_input =  'Invalid Url.  Please provide a product page from Kohls.com, or manually add the product description above.', all_results = '')
+        return render_template('index.html', classifier_info=classifier_info, classifier_input = input_text, all_results = '', error_line = 'Classifier is currently %s.' % (CLASSIFIER['status'].lower()))
   
 class ResultsTable(Table):
     # set class id and table values
@@ -115,17 +142,25 @@ class ResultsTable(Table):
     class_name = Col('Class')
     confidence = Col('Confidence')      
 
+
+class ConfigTable(Table):
+    # set class id and table values
+    table_id = 'config'
+    key = Col('Key')
+    value = Col('Value') 
+
+
 def _create_classifier():
     # fetch all classifiers associated with the NLC instance
     result = NLC_SERVICE.list_classifiers()
     # for the purposes of this demo, we handle only one classifier
     # return the first one found
     if len(result['classifiers']) > 0:
-        return result['classifiers'][0]
+        return NLC_SERVICE.get_classifier(result['classifiers'][0]['classifier_id'])
     else:
         # if none found, create a new classifier, change this value
-        with open(DATA_SET, 'rb') as training_data:
-            metadata = '{"name": "Product_description_classifier", "language": "en"}'
+        with open(os.path.join(data_folder, DATA_SET), 'rb') as training_data:
+            metadata = '{"name": "Product_description_classifier_v2", "language": "en"}'
             classifier = NLC_SERVICE.create_classifier(
                 metadata=metadata,
                 training_data=training_data
@@ -150,7 +185,9 @@ def _get_Kohls_url_info(url):
             # parse html using xpath
             raw_desc = tree.xpath('//*[@id="%s_productDetails"]/div/descendant::*/text()' % (prd_id))
             # extract product description
-            desc = ' '.join([i for i in raw_desc if i not in ['PRODUCT FEATURES', '\r']])
+            desc = ' '.join([i for i in raw_desc if i not in ['PRODUCT FEATURES', '\r', '\n']])
+            while len(desc.split('  ')) > 1:
+                desc = desc.replace('  ', ' ')   
         return desc
     else:
         return False

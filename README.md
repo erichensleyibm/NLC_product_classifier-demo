@@ -64,7 +64,10 @@ This application can be run locally or hosted on IBM Cloud, follow the steps bel
       buildpack: python_buildpack
     ```
 
-1. Run `bluemix app push` from the root directory
+1. Run `bluemix login` from the root directory
+1. Run `bluemix target -o <organization> -s <space>
+    1. IBM or other employees using a federated login will need to use `bluemix login --sso` and supply the temporary password provided through following the link given
+1. Run `bluemix app push`
 1. Access the running app by going to: `https://<host-value>.mybluemix.net/`
 
 > If you've never run the `bluemix` command before there is some configuration required, refer to the official [IBM Cloud CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html) docs to get this set up.

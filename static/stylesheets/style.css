@@ -104,6 +104,63 @@ pre {
 	margin: 0 auto;
 }
 
+#config, #config_training, #config_error {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#config td, #config th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+#config_training td, #config_training th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+#config_error td, #config_error th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#config_training tr:nth-child(even){background-color: #f2f2f2;}
+#config_error tr:nth-child(even){background-color: #f2f2f2;}
+
+#config_training tr:first-child{background-color: #ffff80;}
+#config_error tr:first-child{background-color: #ff8080;}
+
+#config tr:hover {background-color: #ddd;}
+#config_training tr:hover {background-color: #ddd;}
+#config_error tr:hover {background-color: #ddd;}
+
+#config th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #486a89;
+    color: white;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+#config_training th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #486a89;
+    color: white;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+#config_error th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #486a89;
+    color: white;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+
 #demo-header {
   font-size: 1.95312em;
   font-weight: 700;
@@ -4019,4 +4076,11 @@ pre[class*=" language-"] {
   background-color: #264a60;
   border-color: #264a60;
   color: white;
+}
+
+#error_line {
+  font-size: 1.35312em;
+  font-weight: 700;
+  color: #d74108;
+  text-align: center;
 }
