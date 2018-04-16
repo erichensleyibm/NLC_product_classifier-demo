@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="static/stylesheets/style.css">
     <link rel="shortcut icon" href="static/images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">    
   </head>
 
   <body>
@@ -100,12 +100,15 @@
       <tr>
         <td>
           <p> Input for Watson Natural Language Classifier: </p>
-          <textarea rows="5" cols="126"> {{ classifier_input }} </textarea>
-          
           <p id=error_line> {{ error_line }} </p>
+            {{ training_icon|safe }}
+          
+          <p> </p>
+          {{ classifier_input|safe }}
+          
+
             <p> </p>
             {{ all_results }}
-
           <br>
         </td>
       </tr>

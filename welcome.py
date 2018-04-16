@@ -84,18 +84,17 @@ def Welcome():
         # If the credentials are authenticatted, begin training any instances not initiated and store the UUID/status of each
         ALL_CLASSIFIERS = _create_classifier()
         # easier to check no failures than all successes
-        if len([status for idx, status in ALL_CLASSIFIERS.values() if status in ['Non Existent', 'Training', 'Failed', 'Unavailable']]) == 0:
+        if len([data['status'] for data in ALL_CLASSIFIERS.values() if data['status'] in ['Non Existent', 'Training', 'Failed', 'Unavailable']]) == 0:
             # CLASSIFIER_STATUS used both for in app error messages and also can be incorporated into flask_table to trigger HTML formatting
             # by passing the value to flask_table class as an id
             CLASSIFIER_STATUS = 'available'
             CLASSIFIER_READY = True
-        elif 'Training' in [status for idx, status in ALL_CLASSIFIERS.values]:
+        elif 'Training' in [data['status'] for data in ALL_CLASSIFIERS.values()]:
             CLASSIFIER_STATUS = 'training'
             CLASSIFIER_READY = False
         else:
             CLASSIFIER_STATUS = 'unavailable'
             CLASSIFIER_READY = False
-            
 #        classifier_info = json.dumps(CLASSIFIER, indent=4)
         _CLASSIFIER = [{'_name':_name,'_id':data['id'], '_status':data['status']} for _name, data in ALL_CLASSIFIERS.items()]
         classifier_info = ConfigTable(_CLASSIFIER)
@@ -103,8 +102,8 @@ def Welcome():
         if CLASSIFIER_READY:
             # fill in the text boxes internally so they don't appear as empty when not used
             return render_template('index.html', classifier_info=classifier_info, classifier_output="", classifier_input = '', error_line = '', test = '', training_icon = "")
-        elif CLASSIFIER_STATUS == 'config_training':
-            # Return status on any classifier instances which are still training
+        elif CLASSIFIER_STATUS == 'training':
+            # Return status on any classifier instances which are still training and a watson work in progress gif
             return render_template('index.html', classifier_info=classifier_info, classifier_output="", classifier_input = '', error_line = 'Classifier is currently %s.' % (CLASSIFIER_STATUS), test = '', training_icon = '<img id="training_icon" src="static/images/ibm-watson.gif" alt=" " class="center"/>')
         else:
             # Return status on any classifier instances which are experiencing issues

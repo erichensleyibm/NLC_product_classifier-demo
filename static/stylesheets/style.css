@@ -88,10 +88,6 @@ pre {
     padding: 8px;
 }
 
-#classes tr:nth-child(even){background-color: #f2f2f2;}
-
-#classes tr:first-child{background-color: #FFD700;}
-
 #classes tr:hover {background-color: #ddd;}
 
 #classes th {
@@ -104,57 +100,23 @@ pre {
 	margin: 0 auto;
 }
 
-#config, #config_training, #config_error {
+#config {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#config td, #config th {
+#config td, #classes th {
     border: 1px solid #ddd;
     padding: 8px;
 }
-#config_training td, #config_training th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-#config_error td, #config_error th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#config_training tr:nth-child(even){background-color: #f2f2f2;}
-#config_error tr:nth-child(even){background-color: #f2f2f2;}
-
-#config_training tr:first-child{background-color: #ffff80;}
-#config_error tr:first-child{background-color: #ff8080;}
 
 #config tr:hover {background-color: #ddd;}
-#config_training tr:hover {background-color: #ddd;}
-#config_error tr:hover {background-color: #ddd;}
 
 #config th {
     padding-top: 12px;
     padding-bottom: 12px;
-    text-align: left;
-    background-color: #486a89;
-    color: white;
-	table-layout: fixed;
-	margin: 0 auto;
-}
-#config_training th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #486a89;
-    color: white;
-	table-layout: fixed;
-	margin: 0 auto;
-}
-#config_error th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
+    text-align: center;
     background-color: #486a89;
     color: white;
 	table-layout: fixed;
@@ -4076,6 +4038,65 @@ pre[class*=" language-"] {
   background-color: #264a60;
   border-color: #264a60;
   color: white;
+}
+
+#available, #training, #unavailable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#available td, #available th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+#training td, #training th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+#unavailable td, #unavailable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#training tr:nth-child(even){background-color: #f2f2f2;}
+#unavailable tr:nth-child(even){background-color: #f2f2f2;}
+#available tr:nth-child(even){background-color: #f2f2f2;}
+
+#training tr:first-child{background-color: #ffff80;}
+#unavailable tr:first-child{background-color: #ff8080;}
+#available tr:first-child{background-color: #80ff80;}
+
+#available tr:hover {background-color: #ddd;}
+#training tr:hover {background-color: #ddd;}
+#unavailable tr:hover {background-color: #ddd;}
+
+#available th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #486a89;
+    color: white;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+#training th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #486a89;
+    color: white;
+	table-layout: fixed;
+	margin: 0 auto;
+}
+#unavailable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #486a89;
+    color: white;
+	table-layout: fixed;
+	margin: 0 auto;
 }
 
 #error_line {
