@@ -25,7 +25,9 @@ Lets get started! Here we create the classifier with our product description dat
 1. Create service credentials by using the menu on the left and selecting the default options.
 1. Upload the data using the command below. Be sure to substitute the username and password. This will take some time.
 
-```bash curl -i -u {username}:{password} -F training_data=@data/hierarchy_product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"hierarchy_product_description_training\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"```
+```bash
+curl -i -u {username}:{password} -F training_data=@data/hierarchy_product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"hierarchy_product_description_training\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
+```
 
 ## Running the application
 
@@ -65,7 +67,7 @@ This application can be run locally or hosted on IBM Cloud, follow the steps bel
     ```
 
 1. Run `bluemix login` from the root directory
-1. Run `bluemix target -o <organization> -s <space>
+1. Run `bluemix target -o <organization> -s <space>`
     1. IBM or other employees using a federated login will need to use `bluemix login --sso` and supply the temporary password provided through following the link given
 1. Run `bluemix app push`
 1. Access the running app by going to: `https://<host-value>.mybluemix.net/`
