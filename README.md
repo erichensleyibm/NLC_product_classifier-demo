@@ -26,7 +26,7 @@ Lets get started! Here we create the classifier with our product description dat
 1. Upload the data using the command below. Be sure to substitute the username and password. This will take some time.
 
 ```bash
-curl -i -u {username}:{password} -F training_data=@data/hierarchy_product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"hierarchy_product_description_training\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"````
+curl -i -u {username}:{password} -F training_data=@data/hierarchy_product_description_training.csv -F training_metadata="{\"language\":\"en\",\"name\":\"hierarchy_product_description_training\"}" "https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers"
 
 ## Running the application
 
