@@ -9,6 +9,24 @@
     <link rel="stylesheet" href="static/stylesheets/style.css">
     <link rel="shortcut icon" href="static/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">    
+    {{ scroll_script|safe }}
+    <script src="static/scripts/jquery-1.7.2.min.js" language="javascript"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            $("#config td:nth-child(3)").each(function () {
+                if ($(this).text() === "Available") {
+                    $(this).css("background-color", "#99ff99");
+                }
+                else if ($(this).text() === "Training") {
+                    $(this).css("background-color", "#ffff99");
+                }
+                else {
+                    $(this).css("background-color", "#ff9999");                
+                }
+            });
+        });
+    </script>
+
   </head>
 
   <body>
@@ -114,5 +132,5 @@
       </tr>
     </table>   
   </body>
-
+{{ anchor }}
 </html>
