@@ -223,9 +223,9 @@ def classify_url():
             _CLASSIFIER = [{'_name':_name,'_id':data['id'], '_status':data['status']} for _name, data in ALL_CLASSIFIERS.items()]
             classifier_info = ConfigTable(_CLASSIFIER)
         # catch continued error in retreiving classifier information
-        except:
+        except Exception as details_2:
             # send service failure alert
-            _error_alerts(details, 'classify_url', 'Fatal')
+            _error_alerts(details_2, 'classify_url', 'Fatal')
             # return error page
             return render_template('index.html', classifier_info=classifier_info, error_line = 'Unexpected error encountered retrieving NLC instances, please try reloading the home page.', scroll_script = '<script src="static/scripts/bottom_scroll.js" language="javascript" type="text/javascript"></script>')
     
@@ -233,8 +233,14 @@ def classify_url():
     input_url = request.form['classifierinput_url']
     
     # send url to parser
-    input_text = _get_Kohls_url_info(input_url) 
-    
+    try:
+        input_text = _get_Kohls_url_info(input_url) 
+    except Exception as details:
+        # send service failure alert
+        _error_alerts(details, 'get_url_text', 'Fatal')
+        # return error page
+        return render_template('index.html', classifier_info=classifier_info, error_line = 'Invalid Url.  Please provide a product page from Kohls.com, or manually add the product description above.', scroll_script = '<script src="static/scripts/bottom_scroll.js" language="javascript" type="text/javascript"></script>')
+        
     if CLASSIFIER_READY:
         # check for valid product description
         try:
@@ -401,10 +407,19 @@ def _get_Kohls_url_info(url):
             while len(desc.split('  ')) > 1:
                 desc = desc.replace('  ', ' ') 
             escapes = ''.join([chr(char) for char in range(1, 32)])
-            desc.translate(None, escapes)
-            desc = desc[:1000]
-            desc = ' '.join(desc.split(' ')[:120])
-        return desc
+            # check if unicode
+            if type(desc) is unicode:
+                # unicode.translate() different than string
+                desc = desc.translate({ord(c): None for c in escapes})
+                desc = desc[:1000]
+                desc = ' '.join(desc.split(' ')[:120])
+            elif type(desc) is str:
+                desc = desc.translate(None, escapes)
+                desc = desc[:1000]
+                desc = ' '.join(desc.split(' ')[:120])        
+            else:
+                desc = ''
+            return desc
     else:
         return False
     

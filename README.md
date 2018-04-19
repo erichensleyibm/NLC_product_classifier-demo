@@ -4,6 +4,8 @@
 
 Click on the link above to try out the sample app for yourself! Note, the application is made to classify product descriptions based on the input data.
 
+This app was also featured in an [article](https://medium.com/ibm-watson/e-commerce-product-categorization-with-watson-cf2130d7c94a) on Medium.com which explains the process used and potential business applications.
+
 # Classify E-Commerce product descriptions
 
 This application was built to demonstrate IBM's Watson Natural Language Classifier (NLC). The data set we will be using consists of a cleaned [flipkart](https://www.kaggle.com/PromptCloudHQ/flipkart-products) and [JCPenny](https://www.kaggle.com/PromptCloudHQ/all-jc-penny-products/data) datasets made available through [Kaggle](https://www.kaggle.com). The dataset contains product descriptions and category labels. 
@@ -18,7 +20,9 @@ This application is a Python web application based on the [Flask microframework]
 
 ## Setup the classifier
 
-Lets get started! Here we create the classifier with our product description dataset.
+Lets get started! Along with these instructions, a [video tutorial](https://www.youtube.com/watch?v=JPMZxgpc_Uo) is also available.
+
+Here we create the classifier with our product description dataset.
 
 1. Download the [product description training dataset](https://github.com/erichensleyibm/NLC_product_classifier-demo/tree/master/data) by right clicking the link and selecting _Save As_.
 1. Create an [NLC service in IBM Cloud](https://console.bluemix.net/catalog/services/natural-language-classifier), make a note of the service name used in the catalog, we'll need this later.
